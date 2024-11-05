@@ -362,7 +362,156 @@ async function displaySolutions(solutions, start, end, delay) {
         await new Promise(resolve => setTimeout(resolve, delay));
     }
 }
+// ... 其他代码保持不变 ...
 
+async function calculateDelay(start, end, totalSolutions) {
+    // 单个解：3-5秒随机延迟
+    if (start === end) {
+        return Math.random() * 2000 + 3000; // 3000-5000ms
+    }
+    
+    // 全部解：0.5秒或更快
+    if (end - start + 1 === totalSolutions) {
+        return Math.min(500, 500 / (totalSolutions / 20)); // 最快可达到100ms
+    }
+    
+    // 部分解：根据数量动态计算，介于0.5秒和3秒之间
+    const count = end - start + 1;
+    const ratio = count / totalSolutions;
+    return Math.max(500, Math.min(3000, 3000 * (1 - ratio)));
+}
+
+async function displaySolutions(solutions, start, end) {
+    const container = document.getElementById('solutionsContainer');
+    container.innerHTML = '';
+    
+    const totalSolutions = solutions.length;
+    const delay = await calculateDelay(start, end, totalSolutions);
+    
+    // 显示头部信息
+    const header = document.createElement('div');
+    header.innerHTML = `
+        <h2>当前显示第 ${start} 到第 ${end} 个解</h2>
+        <p>共有 ${totalSolutions} 个解法</p>
+        <p>当前动画延迟: ${(delay/1000).toFixed(1)}秒</p>
+    `;
+    container.appendChild(header);
+
+    // 如果是单个解，显示详细的放置过程
+    if (start === end) {
+        const solution = solutions[start-1];
+        const board = createEmptyBoard(solution.length);
+        container.appendChild(board);
+        
+        // 逐个显示皇后的放置过程
+        for (let row = 0; row < solution.length; row++) {
+            for (let col = 0; col < solution.length; col++) {
+                if (solution[row][col] === 'Q') {
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    placeQueen(board, row, col);
+                }
+            }
+        }
+    } 
+    // 显示多个解
+    else {
+        for (let i = start; i <= end; i++) {
+            const board = createBoard(solutions[i-1].length, solutions[i-1]);
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = `<div style="text-align: center">解法 ${i} / ${totalSolutions}</div>`;
+            wrapper.appendChild(board);
+            container.appendChild(wrapper);
+            await new Promise(resolve => setTimeout(resolve, delay));
+        }
+    }
+}
+
+function createEmptyBoard(n) {
+    const board = document.createElement('div');
+    board.className = 'board';
+    
+    for (let i = 0; i < n; i++) {
+        const row = document.createElement('div');
+        row.className = 'row';
+        for (let j = 0; j < n; j++) {
+            const cell = document.createElement('div');
+            cell.className = `cell ${(i + j) % 2 ? 'black' : 'white'}`;
+            cell.dataset.row = i;
+            cell.dataset.col = j;
+            row.appendChild(cell);
+        }
+        board.appendChild(row);
+    }
+    return board;
+}
+
+function placeQueen(board, row, col) {
+    const cell = board.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+    cell.textContent = '♕';
+    cell.classList.add('queen');
+    
+    // 添加放置效果
+    cell.style.animation = 'placeQueen 0.5s ease-out';
+}
+
+// 添加CSS动画
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes placeQueen {
+        0% {
+            transform: scale(0);
+            opacity: 0;
+        }
+        50% {
+            transform: scale(1.2);
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+    
+    .queen {
+        color: red;
+        font-size: 30px;
+    }
+`;
+document.head.appendChild(style);
+
+// 修改主流程中的调用
+async function startGame() {
+    // ... 前面的代码保持不变 ...
+
+    if (choice === '显示单个解') {
+        const index = await showPromptDialog(
+            `请输入要显示的解法编号 (1-${solutions.length})：\n当前共有${solutions.length}个解`
+        );
+        const num = parseInt(index);
+        if (num >= 1 && num <= solutions.length) {
+            await displaySolutions(solutions, num, num);
+        } else {
+            alert('输入的编号无效！');
+            continue;
+        }
+    }
+    else if (choice === '显示部分解') {
+        const range = await showPromptDialog(
+            `请输入范围 (如: 3-10)\n当前共有${solutions.length}个解，范围应在1-${solutions.length}之间`
+        );
+        const [start, end] = range.split('-').map(Number);
+        if (start >= 1 && end <= solutions.length && start <= end) {
+            await displaySolutions(solutions, start, end);
+        } else {
+            alert('输入的范围无效！');
+            continue;
+        }
+    }
+    else if (choice === '显示全部解') {
+        await displaySolutions(solutions, 1, solutions.length);
+    }
+
+    // ... 后面的代码保持不变 ...
+}
 // ... 其他代码保持不变 ...
     </script>
 </body>
