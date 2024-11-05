@@ -388,7 +388,7 @@ async function displaySolutions(solutions, start, end) {
     const totalSolutions = solutions.length;
     const delay = await calculateDelay(start, end, totalSolutions);
     
-    // 显示头部信息
+    
     const header = document.createElement('div');
     header.innerHTML = `
         <h2>当前显示第 ${start} 到第 ${end} 个解</h2>
@@ -397,13 +397,13 @@ async function displaySolutions(solutions, start, end) {
     `;
     container.appendChild(header);
 
-    // 如果是单个解，显示详细的放置过程
+  
     if (start === end) {
         const solution = solutions[start-1];
         const board = createEmptyBoard(solution.length);
         container.appendChild(board);
         
-        // 逐个显示皇后的放置过程
+        
         for (let row = 0; row < solution.length; row++) {
             for (let col = 0; col < solution.length; col++) {
                 if (solution[row][col] === 'Q') {
@@ -413,7 +413,7 @@ async function displaySolutions(solutions, start, end) {
             }
         }
     } 
-    // 显示多个解
+   
     else {
         for (let i = start; i <= end; i++) {
             const board = createBoard(solutions[i-1].length, solutions[i-1]);
@@ -450,11 +450,10 @@ function placeQueen(board, row, col) {
     cell.textContent = '♕';
     cell.classList.add('queen');
     
-    // 添加放置效果
+    
     cell.style.animation = 'placeQueen 0.5s ease-out';
 }
 
-// 添加CSS动画
 const style = document.createElement('style');
 style.textContent = `
     @keyframes placeQueen {
@@ -478,10 +477,7 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// 修改主流程中的调用
 async function startGame() {
-    // ... 前面的代码保持不变 ...
-
     if (choice === '显示单个解') {
         const index = await showPromptDialog(
             `请输入要显示的解法编号 (1-${solutions.length})：\n当前共有${solutions.length}个解`
@@ -509,10 +505,7 @@ async function startGame() {
     else if (choice === '显示全部解') {
         await displaySolutions(solutions, 1, solutions.length);
     }
-
-    // ... 后面的代码保持不变 ...
 }
-// ... 其他代码保持不变 ...
     </script>
 </body>
 </html>
