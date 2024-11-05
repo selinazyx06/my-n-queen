@@ -1,247 +1,461 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
+
 <html>
+
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2566">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
-  </style>
+
+    <meta charset="UTF-8">
+
+    <title>N皇后问题可视化</title>
+
+    <style>
+
+        .container {
+
+            max-width: 800px;
+
+            margin: 0 auto;
+
+            padding: 20px;
+
+        }
+
+        
+
+        .controls {
+
+            margin-bottom: 20px;
+
+        }
+
+        
+
+        .board {
+
+            display: inline-block;
+
+            border: 2px solid #333;
+
+        }
+
+        
+
+        .row {
+
+            display: flex;
+
+        }
+
+        
+
+        .cell {
+
+            width: 50px;
+
+            height: 50px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 30px;
+
+            transition: background-color 0.3s;
+
+        }
+
+        
+
+        .cell.white { background-color: #fff; }
+
+        .cell.black { background-color: #ddd; }
+
+        .cell.queen { color: red; }
+
+        .cell.checking { background-color: #ffeb3b; }
+
+        .cell.invalid { background-color: #ff5252; }
+
+        
+
+        .solutions {
+
+            margin-top: 20px;
+
+        }
+
+        
+
+        .solution-board {
+
+            display: inline-block;
+
+            margin: 10px;
+
+        }
+
+    </style>
+
 </head>
+
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;N皇后问题可视化&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.container {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>max-width: 800px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin: 0 auto;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.controls {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.board {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: inline-block;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 2px solid #333;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.row {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.cell {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 50px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 50px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 30px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: background-color 0.3s;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.cell.white { background-color: #fff; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.cell.black { background-color: #ddd; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.cell.queen { color: red; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.cell.checking { background-color: #ffeb3b; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.cell.invalid { background-color: #ff5252; }</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.solutions {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.solution-board {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: inline-block;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;h1&gt;N皇后问题可视化&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="controls"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;label&gt;选择大小 (1-8): &lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;input type="number" id="boardSize" min="1" max="8" value="4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;button id="solve"&gt;求解&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;button id="next"&gt;下一步&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;button id="auto"&gt;自动演示&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span id="status"&gt;&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="mainBoard" class="board"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="solutions"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2&gt;所有解法：&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="allSolutions"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>class QueensSolver {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>constructor(n) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>this.n = n;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>this.board = Array(n).fill().map(() =&gt; Array(n).fill('.'));</p>
-<p class="p1"><span class="Apple-converted-space">                </span>this.solutions = [];</p>
-<p class="p1"><span class="Apple-converted-space">                </span>this.currentRow = 0;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>this.currentCol = 0;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>this.isRunning = false;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>isValid(row, col) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>// 检查同一列</p>
-<p class="p1"><span class="Apple-converted-space">                </span>for (let i = 0; i &lt; row; i++) {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>if (this.board[i][col] === 'Q') return false;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>// 检查左上对角线</p>
-<p class="p1"><span class="Apple-converted-space">                </span>for (let i = row - 1, j = col - 1; i &gt;= 0 &amp;&amp; j &gt;= 0; i--, j--) {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>if (this.board[i][j] === 'Q') return false;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>// 检查右上对角线</p>
-<p class="p1"><span class="Apple-converted-space">                </span>for (let i = row - 1, j = col + 1; i &gt;= 0 &amp;&amp; j &lt; this.n; i--, j++) {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>if (this.board[i][j] === 'Q') return false;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>return true;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>async step() {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (this.currentRow === this.n) {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>this.solutions.push(this.board.map(row =&gt; [...row]));</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>return true;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (this.currentCol &gt;= this.n) {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>this.currentCol = 0;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>this.currentRow--;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>return false;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>await this.visualizeCheck(this.currentRow, this.currentCol);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (this.isValid(this.currentRow, this.currentCol)) {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>this.board[this.currentRow][this.currentCol] = 'Q';</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>await this.visualizeBoard();</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>this.currentRow++;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>this.currentCol = 0;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>this.currentCol++;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>return false;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>async visualizeCheck(row, col) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const cell = document.querySelector(`#mainBoard .cell[data-row="${row}"][data-col="${col}"]`);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>cell.classList.add('checking');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>await new Promise(resolve =&gt; setTimeout(resolve, 200));</p>
-<p class="p1"><span class="Apple-converted-space">                </span>cell.classList.remove('checking');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>async visualizeBoard() {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>updateBoard(this.board);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>await new Promise(resolve =&gt; setTimeout(resolve, 300));</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>let solver = null;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>let autoInterval = null;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function createBoard(n, container, board = null) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>container.innerHTML = '';</p>
-<p class="p1"><span class="Apple-converted-space">            </span>for (let i = 0; i &lt; n; i++) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const row = document.createElement('div');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>row.className = 'row';</p>
-<p class="p1"><span class="Apple-converted-space">                </span>for (let j = 0; j &lt; n; j++) {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const cell = document.createElement('div');</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>cell.className = `cell ${(i + j) % 2 ? 'black' : 'white'}`;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>cell.dataset.row = i;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>cell.dataset.col = j;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>if (board &amp;&amp; board[i][j] === 'Q') {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>cell.textContent = '♕';</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>cell.classList.add('queen');</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>row.appendChild(cell);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>container.appendChild(row);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function updateBoard(board) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const cells = document.querySelectorAll('#mainBoard .cell');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>cells.forEach(cell =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const row = parseInt(cell.dataset.row);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const col = parseInt(cell.dataset.col);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>cell.textContent = board[row][col] === 'Q' ? '♕' : '';</p>
-<p class="p1"><span class="Apple-converted-space">                </span>cell.classList.toggle('queen', board[row][col] === 'Q');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>});</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function showSolutions(solutions) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const container = document.getElementById('allSolutions');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>container.innerHTML = '';</p>
-<p class="p1"><span class="Apple-converted-space">            </span>solutions.forEach((solution, index) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const boardDiv = document.createElement('div');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>boardDiv.className = 'solution-board';</p>
-<p class="p1"><span class="Apple-converted-space">                </span>boardDiv.innerHTML = `&lt;div&gt;解法 ${index + 1}&lt;/div&gt;`;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>createBoard(solution.length, boardDiv, solution);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>container.appendChild(boardDiv);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>});</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('solve').addEventListener('click', () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const n = parseInt(document.getElementById('boardSize').value);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const mainBoard = document.getElementById('mainBoard');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>createBoard(n, mainBoard);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>solver = new QueensSolver(n);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('status').textContent = '开始求解...';</p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('next').addEventListener('click', async () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (!solver || solver.isRunning) return;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>solver.isRunning = true;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const isDone = await solver.step();</p>
-<p class="p1"><span class="Apple-converted-space">            </span>solver.isRunning = false;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (isDone) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>showSolutions(solver.solutions);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('status').textContent = `找到 ${solver.solutions.length} 个解法`;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('auto').addEventListener('click', function() {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (autoInterval) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>clearInterval(autoInterval);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>autoInterval = null;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>this.textContent = '自动演示';</p>
-<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>this.textContent = '停止';</p>
-<p class="p1"><span class="Apple-converted-space">            </span>autoInterval = setInterval(async () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (!solver || solver.isRunning) return;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>solver.isRunning = true;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const isDone = await solver.step();</p>
-<p class="p1"><span class="Apple-converted-space">                </span>solver.isRunning = false;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (isDone) {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>clearInterval(autoInterval);</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>autoInterval = null;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>this.textContent = '自动演示';</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>showSolutions(solver.solutions);</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>document.getElementById('status').textContent = `找到 ${solver.solutions.length} 个解法`;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}, 500);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// 初始化4皇后问题</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('solve').click();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+
+    <div class="container">
+
+        <h1>N皇后问题可视化</h1>
+
+        <div class="controls">
+
+            <label>选择大小 (1-8): </label>
+
+            <input type="number" id="boardSize" min="1" max="8" value="4">
+
+            <button id="solve">求解</button>
+
+            <button id="next">下一步</button>
+
+            <button id="auto">自动演示</button>
+
+            <span id="status"></span>
+
+        </div>
+
+        <div id="mainBoard" class="board"></div>
+
+        <div class="solutions">
+
+            <h2>所有解法：</h2>
+
+            <div id="allSolutions"></div>
+
+        </div>
+
+    </div>
+
+
+
+    <script>
+
+        class QueensSolver {
+
+            constructor(n) {
+
+                this.n = n;
+
+                this.board = Array(n).fill().map(() => Array(n).fill('.'));
+
+                this.solutions = [];
+
+                this.currentRow = 0;
+
+                this.currentCol = 0;
+
+                this.isRunning = false;
+
+            }
+
+
+
+            isValid(row, col) {
+
+                // 检查同一列
+
+                for (let i = 0; i < row; i++) {
+
+                    if (this.board[i][col] === 'Q') return false;
+
+                }
+
+                
+
+                // 检查左上对角线
+
+                for (let i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+
+                    if (this.board[i][j] === 'Q') return false;
+
+                }
+
+                
+
+                // 检查右上对角线
+
+                for (let i = row - 1, j = col + 1; i >= 0 && j < this.n; i--, j++) {
+
+                    if (this.board[i][j] === 'Q') return false;
+
+                }
+
+                
+
+                return true;
+
+            }
+
+
+
+            async step() {
+
+                if (this.currentRow === this.n) {
+
+                    this.solutions.push(this.board.map(row => [...row]));
+
+                    return true;
+
+                }
+
+
+
+                if (this.currentCol >= this.n) {
+
+                    this.currentCol = 0;
+
+                    this.currentRow--;
+
+                    return false;
+
+                }
+
+
+
+                await this.visualizeCheck(this.currentRow, this.currentCol);
+
+
+
+                if (this.isValid(this.currentRow, this.currentCol)) {
+
+                    this.board[this.currentRow][this.currentCol] = 'Q';
+
+                    await this.visualizeBoard();
+
+                    this.currentRow++;
+
+                    this.currentCol = 0;
+
+                } else {
+
+                    this.currentCol++;
+
+                }
+
+
+
+                return false;
+
+            }
+
+
+
+            async visualizeCheck(row, col) {
+
+                const cell = document.querySelector(`#mainBoard .cell[data-row="${row}"][data-col="${col}"]`);
+
+                cell.classList.add('checking');
+
+                await new Promise(resolve => setTimeout(resolve, 200));
+
+                cell.classList.remove('checking');
+
+            }
+
+
+
+            async visualizeBoard() {
+
+                updateBoard(this.board);
+
+                await new Promise(resolve => setTimeout(resolve, 300));
+
+            }
+
+        }
+
+
+
+        let solver = null;
+
+        let autoInterval = null;
+
+
+
+        function createBoard(n, container, board = null) {
+
+            container.innerHTML = '';
+
+            for (let i = 0; i < n; i++) {
+
+                const row = document.createElement('div');
+
+                row.className = 'row';
+
+                for (let j = 0; j < n; j++) {
+
+                    const cell = document.createElement('div');
+
+                    cell.className = `cell ${(i + j) % 2 ? 'black' : 'white'}`;
+
+                    cell.dataset.row = i;
+
+                    cell.dataset.col = j;
+
+                    if (board && board[i][j] === 'Q') {
+
+                        cell.textContent = '♕';
+
+                        cell.classList.add('queen');
+
+                    }
+
+                    row.appendChild(cell);
+
+                }
+
+                container.appendChild(row);
+
+            }
+
+        }
+
+
+
+        function updateBoard(board) {
+
+            const cells = document.querySelectorAll('#mainBoard .cell');
+
+            cells.forEach(cell => {
+
+                const row = parseInt(cell.dataset.row);
+
+                const col = parseInt(cell.dataset.col);
+
+                cell.textContent = board[row][col] === 'Q' ? '♕' : '';
+
+                cell.classList.toggle('queen', board[row][col] === 'Q');
+
+            });
+
+        }
+
+
+
+        function showSolutions(solutions) {
+
+            const container = document.getElementById('allSolutions');
+
+            container.innerHTML = '';
+
+            solutions.forEach((solution, index) => {
+
+                const boardDiv = document.createElement('div');
+
+                boardDiv.className = 'solution-board';
+
+                boardDiv.innerHTML = `<div>解法 ${index + 1}</div>`;
+
+                createBoard(solution.length, boardDiv, solution);
+
+                container.appendChild(boardDiv);
+
+            });
+
+        }
+
+
+
+        document.getElementById('solve').addEventListener('click', () => {
+
+            const n = parseInt(document.getElementById('boardSize').value);
+
+            const mainBoard = document.getElementById('mainBoard');
+
+            createBoard(n, mainBoard);
+
+            solver = new QueensSolver(n);
+
+            document.getElementById('status').textContent = '开始求解...';
+
+        });
+
+
+
+        document.getElementById('next').addEventListener('click', async () => {
+
+            if (!solver || solver.isRunning) return;
+
+            solver.isRunning = true;
+
+            const isDone = await solver.step();
+
+            solver.isRunning = false;
+
+            if (isDone) {
+
+                showSolutions(solver.solutions);
+
+                document.getElementById('status').textContent = `找到 ${solver.solutions.length} 个解法`;
+
+            }
+
+        });
+
+
+
+        document.getElementById('auto').addEventListener('click', function() {
+
+            if (autoInterval) {
+
+                clearInterval(autoInterval);
+
+                autoInterval = null;
+
+                this.textContent = '自动演示';
+
+                return;
+
+            }
+
+
+
+            this.textContent = '停止';
+
+            autoInterval = setInterval(async () => {
+
+                if (!solver || solver.isRunning) return;
+
+                solver.isRunning = true;
+
+                const isDone = await solver.step();
+
+                solver.isRunning = false;
+
+                if (isDone) {
+
+                    clearInterval(autoInterval);
+
+                    autoInterval = null;
+
+                    this.textContent = '自动演示';
+
+                    showSolutions(solver.solutions);
+
+                    document.getElementById('status').textContent = `找到 ${solver.solutions.length} 个解法`;
+
+                }
+
+            }, 500);
+
+        });
+
+
+
+        // 初始化4皇后问题
+
+        document.getElementById('solve').click();
+
+    </script>
+
 </body>
+
 </html>
