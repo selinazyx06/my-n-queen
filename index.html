@@ -258,6 +258,112 @@
         }
 
         document.getElementById('startBtn').addEventListener('click', startGame);
+        // ... 其他代码保持不变 ...
+
+async function startGame() {
+    while (true) {
+        // 获取N的值
+        const nStr = await showPromptDialog('请输入N的值 (1-8)：');
+        const n = parseInt(nStr);
+
+        if (isNaN(n) || n < 1) {
+            alert('请输入有效的数字！');
+            continue;
+        }
+
+        if (n > 8) {
+            alert('N的值不能大于8！');
+            continue;
+        }
+
+        // 求解
+        const solver = new QueensSolver(n);
+        const solutions = solver.solve();
+
+        // 添加消息框提示解的情况
+        if (solutions.length === 0) {
+            alert(`${n}皇后问题无解！`);
+            const choice = await showDialog(
+                '是否重新开始？',
+                ['重新开始', '结束程序']
+            );
+            if (choice === '结束程序') {
+                return;
+            }
+            continue;
+        } else {
+            alert(`${n}皇后问题有解！\n共找到 ${solutions.length} 个解法。`);
+        }
+
+        // 有解的情况
+        const choice = await showDialog(
+            `请选择显示方式：`,
+            ['显示单个解', '显示部分解', '显示全部解']
+        );
+
+        if (choice === '显示单个解') {
+            const index = await showPromptDialog(
+                `请输入要显示的解法编号 (1-${solutions.length})：\n当前共有${solutions.length}个解`
+            );
+            const num = parseInt(index);
+            if (num >= 1 && num <= solutions.length) {
+                await displaySolutions(solutions, num, num, 3000);
+            } else {
+                alert('输入的编号无效！');
+                continue;
+            }
+        }
+        else if (choice === '显示部分解') {
+            const range = await showPromptDialog(
+                `请输入范围 (如: 3-10)\n当前共有${solutions.length}个解，范围应在1-${solutions.length}之间`
+            );
+            const [start, end] = range.split('-').map(Number);
+            if (start >= 1 && end <= solutions.length && start <= end) {
+                const delay = Math.max(500, 3000 / (end - start + 1));
+                await displaySolutions(solutions, start, end, delay);
+            } else {
+                alert('输入的范围无效！');
+                continue;
+            }
+        }
+        else if (choice === '显示全部解') {
+            await displaySolutions(solutions, 1, solutions.length, 500);
+        }
+
+        const playAgain = await showDialog(
+            '是否继续尝试其他N值？', 
+            ['继续', '结束']
+        );
+        if (playAgain === '结束') {
+            break;
+        }
+    }
+}
+
+// 优化显示解法的函数，添加更多提示信息
+async function displaySolutions(solutions, start, end, delay) {
+    const container = document.getElementById('solutionsContainer');
+    container.innerHTML = '';
+    
+    const totalSolutions = solutions.length;
+    const header = document.createElement('div');
+    header.innerHTML = `
+        <h2>当前显示第 ${start} 到第 ${end} 个解</h2>
+        <p>共有 ${totalSolutions} 个解法</p>
+    `;
+    container.appendChild(header);
+    
+    for (let i = start; i <= end; i++) {
+        const board = createBoard(solutions[0].length, solutions[i-1]);
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = `<div style="text-align: center">解法 ${i} / ${totalSolutions}</div>`;
+        wrapper.appendChild(board);
+        container.appendChild(wrapper);
+        await new Promise(resolve => setTimeout(resolve, delay));
+    }
+}
+
+// ... 其他代码保持不变 ...
     </script>
 </body>
 </html>
